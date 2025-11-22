@@ -1,0 +1,114 @@
+:root {
+    --background-color-light: #f0f2f5;
+    --text-color-light: #333;
+    --card-background-light: #fff;
+    --background-color-dark: #222;
+    --text-color-dark: #fff;
+    --card-background-dark: #333;
+}
+
+body {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    font-family:'Segoe UI',Arial,sans-serif;
+    margin:0;
+}
+
+body.dark-theme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+#theme-switcher {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+*{ box-sizing:border-box; }
+
+/* Styles for the index page */
+body.index-page {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.index-page .grid {
+    width:90%;
+    max-width:1100px;
+    display:grid;
+    gap:25px;
+    grid-template-columns:1fr;         
+}
+
+@media (min-width: 768px){
+    .index-page .grid {
+        grid-template-columns:repeat(3, 1fr);   
+    }
+}
+
+.index-page .card {
+    height:180px;
+    background: var(--card-background-light);
+    border-radius:15px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color: var(--text-color-light);
+    font-weight:600;
+    transition:.2s;
+}
+
+body.dark-theme .card {
+    background: var(--card-background-dark);
+    color: var(--text-color-dark);
+}
+
+.index-page .card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+
+/* button color */
+   
+.btn-blue {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+
+  padding: 12px 20px;
+  border-radius: 12px;
+
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.45);
+  opacity: 0.95;
+}
+
+.btn-blue:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-blue:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35),
+              0 8px 18px rgba(37, 99, 235, 0.35);
+}
