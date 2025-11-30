@@ -1,3 +1,4 @@
+
 <?php
 // Show all errors
 error_reporting(E_ALL);
@@ -8,20 +9,80 @@ ini_set('display_errors', 1);
 <html>
 <head>
     <title>SQL Query Executor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Helvetica, Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            display: flex;
+            justify-content: center;    /* horizontal center */
+            align-items: center;        /* vertical center   */
+            min-height: 100vh;
+        }
+        .card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            max-width: 800px;
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: vertical;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px 18px;
+            border: none;
+            background: #4c8bfd;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        a{
+            text-decoration:none;
+            color: #fff;
+        }
+        a:hover{
+            text-decoration:none;
+        }
+        button:hover {
+            background: #3a74d9;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #e2e7ff;
+        }
+    </style>
     
   <link rel="stylesheet" href="style.css">
   <script src="script.js"></script>
 </head>
 <body>
-<button id="theme-switcher" class="btn-blue">Toggle Theme</button>
+
 <div class="card">
     <h2>Run SQL Query on Canteen_Management_System</h2>
 
+<button id="theme-switcher" class="btn-blue" style="position: fixed; top: 10px; right:10px;">Toggle Theme</button>
     <form method="POST">
         <textarea name="query" rows="4" placeholder="Enter your SQL query here"></textarea>
         <br>
         <button type="submit">Run</button>
-        <button type="submit"><a href="./">Go To Home</a></button>
+        <button type="submit"><a href="./dashboard.php">Go To Home</a></button>
 
     </form>
 

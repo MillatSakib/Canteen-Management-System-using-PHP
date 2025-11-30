@@ -25,7 +25,7 @@ $stmt->close();
 <html>
 <head>
   <title>Order Status</title>
-  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="./assets/style.css">
   <style>
     .table-wrap{
       overflow-x:auto;
@@ -94,6 +94,9 @@ $stmt->close();
       gap:12px;
       margin-bottom:16px;
     }
+
+
+    
   </style>
 </head>
 <body>
@@ -103,8 +106,8 @@ $stmt->close();
   <div class="header-row">
     <h2>🧾 My Order Status</h2>
     <div class="nav">
-      <a class="btn" href="./user_home.php">Home</a>
-      <a class="btn" href="order_food.php">Order More</a>
+      <a class="home-btn__text" href="./user_home.php">Home</a>
+      <a class="home-btn__text" href="orderFood.php">Order More</a>
     </div>
   </div>
 

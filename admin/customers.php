@@ -8,11 +8,11 @@ try {
     $conn->set_charset('utf8mb4');
 
     // ---- STATS ----
-    $totalCustomers = (int)$conn->query("SELECT COUNT(*) AS c FROM Customers")->fetch_assoc()['c'];
+    $totalCustomers = (int)$conn->query("SELECT COUNT(*) AS c FROM customers")->fetch_assoc()['c'];
 
     $newThisMonth = (int)$conn->query("
         SELECT COUNT(*) AS c
-        FROM Customers
+        FROM customers
         WHERE YEAR(created_at) = YEAR(CURDATE())
           AND MONTH(created_at) = MONTH(CURDATE())
     ")->fetch_assoc()['c'];
@@ -20,7 +20,7 @@ try {
     // Active = customers who have at least one non-cancelled order
     $activeCustomers = (int)$conn->query("
         SELECT COUNT(DISTINCT o.customer_id) AS c
-        FROM Orders o
+        FROM orders o
         WHERE o.order_status IN ('pending','completed')
     ")->fetch_assoc()['c'];
 
@@ -30,8 +30,8 @@ try {
     $topRows = [];
     $res = $conn->query("
         SELECT c.customer_name, COUNT(o.order_id) AS purchases
-        FROM Orders o
-        JOIN Customers c ON c.customer_id = o.customer_id
+        FROM orders o
+        JOIN customers c ON c.customer_id = o.customer_id
         WHERE o.order_status IN ('pending','completed')
         GROUP BY c.customer_id, c.customer_name
         ORDER BY purchases DESC
@@ -55,7 +55,7 @@ try {
     $map = array_fill_keys($monthKeys, 0);
     $growthRes = $conn->query("
         SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym, COUNT(*) AS cnt
-        FROM Customers
+        FROM customers
         WHERE created_at >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
         GROUP BY ym
         ORDER BY ym

@@ -198,7 +198,7 @@ CREATE TABLE
     );
 
 INSERT INTO
-    Customers (customer_name, email, phone_number, address)
+    customers (customer_name, email, phone_number, address)
 VALUES
     (
         'Akash Ahmed',
@@ -357,7 +357,7 @@ VALUES
     ('Roshogolla', 'Sweet syrupy dumpling', 20.00, 5);
 
 INSERT INTO
-    Inventory (product_id, stock_quantity)
+    inventory (product_id, stock_quantity)
 VALUES
     (1, 100),
     (2, 50),

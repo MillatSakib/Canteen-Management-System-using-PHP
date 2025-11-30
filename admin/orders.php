@@ -6,17 +6,17 @@ try {
     $conn->set_charset("utf8mb4");
 
     // ---- SUMMARY COUNTS ----
-    $totalOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM Orders")->fetch_assoc()['c'];
-    $pendingOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM Orders WHERE order_status='pending'")->fetch_assoc()['c'];
-    $completedOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM Orders WHERE order_status='completed'")->fetch_assoc()['c'];
-    $canceledOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM Orders WHERE order_status='canceled'")->fetch_assoc()['c'];
+    $totalOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM orders")->fetch_assoc()['c'];
+    $pendingOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM orders WHERE order_status='Pending'")->fetch_assoc()['c'];
+    $deliveredOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM orders WHERE order_status='Delivered'")->fetch_assoc()['c'];
+    $rejectedOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM orders WHERE order_status='Rejected'")->fetch_assoc()['c'];
 
     // ---- RECENT ORDERS ----
     $recentOrders = [];
     $res = $conn->query("
         SELECT o.order_id, c.customer_name, o.order_status
-        FROM Orders o
-        JOIN Customers c ON c.customer_id = o.customer_id
+        FROM orders o
+        JOIN customers c ON c.customer_id = o.customer_id
         ORDER BY o.order_date DESC
         LIMIT 5
     ");
@@ -36,7 +36,7 @@ try {
 
     $res = $conn->query("
         SELECT DATE_FORMAT(order_date, '%Y-%m') AS ym, COUNT(*) AS cnt
-        FROM Orders
+        FROM orders
         WHERE order_date >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
         GROUP BY ym
         ORDER BY ym
@@ -75,8 +75,8 @@ try {
   <div class="row g-4 mb-4">
     <div class="col-md-3"><div class="card p-3 text-center"><h5>Total Orders</h5><h2><?= $totalOrders ?></h2></div></div>
     <div class="col-md-3"><div class="card p-3 text-center"><h5>Pending</h5><h2><?= $pendingOrders ?></h2></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h5>Completed</h5><h2><?= $completedOrders ?></h2></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h5>Canceled</h5><h2><?= $canceledOrders ?></h2></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h5>Deliverd</h5><h2><?= $deliveredOrders ?></h2></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h5>Rejected</h5><h2><?= $rejectedOrders ?></h2></div></div>
   </div>
 
   <!-- Charts + Table -->
