@@ -1,14 +1,5 @@
 <?php
 // report.php
-$host = "127.0.0.1";
-$user = "root";       // change if needed
-$pass = "";           // change if needed
-$db   = "Canteen_Management_System"; // change if needed
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // ====== KPIs ======
 
@@ -34,14 +25,26 @@ if ($prevMonth > 0) {
 // Revenue vs Expenses by Day
 $financeData = [];
 $res = $conn->query("
-    SELECT DATE(s.sales_date) as date, 
-           COALESCE(SUM(s.total_amount),0) as revenue,
-           (SELECT COALESCE(SUM(amount),0) FROM expenses e WHERE e.expense_date = DATE(s.sales_date)) as expenses
-    FROM sales s
-    GROUP BY DATE(s.sales_date)
-    ORDER BY DATE(s.sales_date)
-");
-while ($row = $res->fetch_assoc()) {
+    SELECT
+        DATE(s.sales_date) AS date,
+        COALESCE(SUM(s.total_amount), 0) AS revenue,
+        COALESCE(MAX(daily_expenses.total_expenses), 0) AS expenses
+    FROM
+        sales s
+    LEFT JOIN (
+        SELECT
+            DATE(expense_date) AS expense_day,
+            SUM(amount) AS total_expenses
+        FROM
+            expenses
+        GROUP BY
+            DATE(expense_date)
+    ) AS daily_expenses ON DATE(s.sales_date) = daily_expenses.expense_day
+    GROUP BY
+        DATE(s.sales_date)
+    ORDER BY
+        DATE(s.sales_date)
+");while ($row = $res->fetch_assoc()) {
     $financeData[] = $row;
 }
 
@@ -71,7 +74,6 @@ while ($row = $res2->fetch_assoc()) {
     $salesBreakdown[] = $row;
 }
 
-$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

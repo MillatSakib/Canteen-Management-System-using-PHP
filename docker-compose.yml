@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: canteen_web
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=canteen_user
+      - DB_PASSWORD=canteen_password
+      - DB_NAME=canteen_db
+    networks:
+      - canteen_net
+
+  db:
+    image: mysql:8.0
+    container_name: canteen_db
+    environment:
+      MYSQL_DATABASE: canteen_db
+      MYSQL_USER: canteen_user
+      MYSQL_PASSWORD: canteen_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - "./db/canteen_management_system (1).sql:/docker-entrypoint-initdb.d/init.sql"
+      - db_data:/var/lib/mysql
+    networks:
+      - canteen_net
+
+volumes:
+  db_data:
+
+networks:
+  canteen_net:
+    driver: bridge

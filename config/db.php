@@ -1,9 +1,9 @@
 <?php
 // config/db.php
-$host = "127.0.0.1";
-$user = "root";
-$pass = "";
-$dbname = "Canteen_Management_System";
+$host = getenv('DB_HOST') ?: '127.0.0.1';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASSWORD') ?: '';
+$dbname = getenv('DB_NAME') ?: 'Canteen_Management_System';
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 

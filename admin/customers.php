@@ -1,13 +1,7 @@
 <?php
-// Show nice errors during dev
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+// customers.php
 
-try {
-    // Use 127.0.0.1 to avoid socket issues
-    $conn = new mysqli('127.0.0.1', 'root', '', 'Canteen_Management_System', 3306);
-    $conn->set_charset('utf8mb4');
-
-    // ---- STATS ----
+// ---- STATS ----
     $totalCustomers = (int)$conn->query("SELECT COUNT(*) AS c FROM customers")->fetch_assoc()['c'];
 
     $newThisMonth = (int)$conn->query("
@@ -67,13 +61,6 @@ try {
     }
     $counts = array_values($map);
 
-} catch (mysqli_sql_exception $e) {
-    http_response_code(500);
-    echo "<pre style='padding:16px; background:#fff3f3; border:1px solid #f5c2c7; color:#842029; border-radius:8px;'>
-Database error: " . htmlspecialchars($e->getMessage()) . "
-</pre>";
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
