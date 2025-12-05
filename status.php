@@ -26,6 +26,7 @@ $stmt->close();
 <head>
   <title>Order Status</title>
   <link rel="stylesheet" href="./assets/style.css">
+
   <style>
     .table-wrap{
       overflow-x:auto;
@@ -36,7 +37,7 @@ $stmt->close();
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:800px;
+      min-width:900px;
     }
     thead{
       background:linear-gradient(135deg,#1d4ed8,#3b82f6);
@@ -62,6 +63,18 @@ $stmt->close();
     .badge-pending{ background:#f59e0b; color:white; }
     .badge-delivered{ background:#16a34a; color:white; }
     .badge-cancelled{ background:#dc2626; color:white; }
+
+    .cancel-btn {
+      padding:6px 12px;
+      background:#dc2626;
+      color:white;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+    }
+    .cancel-btn:hover { background:#b91c1c; }
 
     details{
       background:#f8fafc;
@@ -94,9 +107,6 @@ $stmt->close();
       gap:12px;
       margin-bottom:16px;
     }
-
-
-    
   </style>
 </head>
 <body>
@@ -115,6 +125,10 @@ $stmt->close();
     <p class="success">✅ Your order has been placed!</p>
   <?php endif; ?>
 
+  <?php if (isset($_GET["cancel_success"])): ?>
+    <p class="success">❌ Order has been cancelled successfully!</p>
+  <?php endif; ?>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -124,11 +138,14 @@ $stmt->close();
           <th>Total Amount</th>
           <th>Status</th>
           <th>Items</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
+
         <?php if ($orders->num_rows > 0): ?>
           <?php while($order = $orders->fetch_assoc()): ?>
+
             <?php
               $status = strtolower($order["order_status"]);
               $badgeClass = "badge-pending";
@@ -147,15 +164,18 @@ $stmt->close();
               $items = $itemStmt->get_result();
               $itemStmt->close();
             ?>
+
             <tr>
               <td>#<?= $order["order_id"] ?></td>
               <td><?= htmlspecialchars($order["order_date"]) ?></td>
               <td class="price">৳<?= number_format($order["total_amount"],2) ?></td>
+
               <td>
                 <span class="badge <?= $badgeClass ?>">
                   <?= htmlspecialchars($order["order_status"]) ?>
                 </span>
               </td>
+
               <td>
                 <details>
                   <summary>View Items (<?= $items->num_rows ?>)</summary>
@@ -170,7 +190,7 @@ $stmt->close();
                       </tr>
                     </thead>
                     <tbody>
-                      <?php while($it = $items->fetch_assoc()): 
+                      <?php while($it = $items->fetch_assoc()):
                         $sub = $it["quantity"] * $it["unit_price"];
                       ?>
                         <tr>
@@ -184,15 +204,30 @@ $stmt->close();
                   </table>
                 </details>
               </td>
+
+              <!-- ACTION COLUMN -->
+              <td>
+                <?php if ($status === "pending"): ?>
+                  <form action="cancel_order.php" method="POST"
+                        onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                    <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
+                    <button type="submit" class="cancel-btn">Cancel</button>
+                  </form>
+                <?php else: ?>
+                  <span style="color:#9ca3af;">—</span>
+                <?php endif; ?>
+              </td>
             </tr>
+
           <?php endwhile; ?>
         <?php else: ?>
           <tr>
-            <td colspan="5" style="text-align:center;padding:20px;">
+            <td colspan="6" style="text-align:center;padding:20px;">
               You have no orders yet.
             </td>
           </tr>
         <?php endif; ?>
+
       </tbody>
     </table>
   </div>
