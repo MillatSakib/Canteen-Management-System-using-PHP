@@ -24,7 +24,7 @@ try {
     $activeCustomers = (int)$conn->query("
         SELECT COUNT(DISTINCT o.customer_id) AS c
         FROM orders o
-        WHERE o.order_status IN ('pending','completed')
+        WHERE o.order_status IN ('Pending','Delivered')
     ")->fetch_assoc()['c'];
 
     $inactiveCustomers = max(0, $totalCustomers - $activeCustomers);
