@@ -1,6 +1,9 @@
 <?php
 // products.php
-$host = "127.0.0.1";
+$isDocker = file_exists('/.dockerenv');
+
+// Dynamic Host
+$host = $isDocker ? 'db' : '127.0.0.1';
 $user = "root";       
 $pass = "";           
 $db   = "Canteen_Management_System";
