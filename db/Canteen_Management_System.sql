@@ -18,9 +18,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
-CREATE DATABASE `Canteen_Management_System`;
-
+CREATE DATABASE IF NOT EXISTS `Canteen_Management_System`;
 USE `Canteen_Management_System`;
+
 --
 
 -- --------------------------------------------------------
