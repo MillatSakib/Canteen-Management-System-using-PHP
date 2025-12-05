@@ -21,7 +21,6 @@
         <a href="customers.php" class="card">Customers</a>
         <a href="products.php" class="card">Products</a>
         <a href="orders.php" class="card">Orders</a>
-        <a href="reports.php" class="card">Reports</a>
          <a href="foodModify.php" class="card">Food Add Or Delete</a>
          <a href="statusUpdate.php" class="card">Delivery Status Update</a>
          <a href="userManage.php" class="card">User Management</a>
