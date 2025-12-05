@@ -24,7 +24,7 @@ services:
       - db_data:/var/lib/mysql
       - ./db/Canteen_Management_System.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3307:3306"
+      - "3370:3306"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
