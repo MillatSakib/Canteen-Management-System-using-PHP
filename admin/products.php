@@ -1,5 +1,14 @@
 <?php
 // products.php
+$host = "127.0.0.1";
+$user = "root";       
+$pass = "";           
+$db   = "Canteen_Management_System";
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 // ===== KPI Cards =====
 $totalProductsQ = $conn->query("SELECT COUNT(*) as total FROM products");
@@ -57,6 +66,7 @@ while ($row = $res2->fetch_assoc()) {
     $topProducts[] = $row;
 }
 
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

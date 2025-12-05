@@ -1,5 +1,9 @@
 <?php
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 try {
+    $conn = new mysqli("127.0.0.1", "root", "", "Canteen_Management_System", 3306);
+    $conn->set_charset("utf8mb4");
 
     // ---- SUMMARY COUNTS ----
     $totalOrders = (int)$conn->query("SELECT COUNT(*) AS c FROM orders")->fetch_assoc()['c'];

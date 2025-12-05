@@ -17,7 +17,7 @@
 </div>
 
     <div class="grid">
-        <a href="query-execution.php" class="card">SQL Query Executor</a>
+        
         <a href="customers.php" class="card">Customers</a>
         <a href="products.php" class="card">Products</a>
         <a href="orders.php" class="card">Orders</a>
