@@ -1,12 +1,11 @@
-USE canteen_management_system;
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 22, 2025 at 04:49 PM
+-- Host: localhost
+-- Generation Time: Dec 05, 2025 at 04:04 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -19,7 +18,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `canteen_management_system`
+CREATE DATABASE `Canteen_Management_System`;
+
+USE `Canteen_Management_System`;
 --
 
 -- --------------------------------------------------------
@@ -151,6 +152,13 @@ INSERT INTO `customers` (`customer_id`, `customer_name`, `email`, `password`, `r
 --
 -- Triggers `customers`
 --
+DELIMITER $$
+CREATE TRIGGER `log_new_customer` AFTER INSERT ON `customers` FOR EACH ROW BEGIN
+    INSERT INTO customer_audit_log (customer_id, action, log_date)
+    VALUES (NEW.customer_id, 'New Customer Added', NOW());
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -325,7 +333,7 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`inventory_id`, `product_id`, `stock_quantity`, `last_updated`) VALUES
-(1, 1, 38, '2025-11-22 14:24:23'),
+(1, 1, 32, '2025-12-05 14:52:03'),
 (2, 2, 20, '2025-11-22 14:01:47'),
 (3, 3, 164, '2025-11-22 14:01:47'),
 (4, 4, 61, '2025-11-22 14:01:09'),
@@ -339,9 +347,9 @@ INSERT INTO `inventory` (`inventory_id`, `product_id`, `stock_quantity`, `last_u
 (12, 12, 0, '2025-08-19 11:43:27'),
 (13, 13, 196, '2025-11-22 14:33:19'),
 (14, 14, 180, '2025-08-19 11:42:32'),
-(15, 15, 0, '2025-08-19 11:43:27'),
+(15, 15, 50, '2025-12-05 14:52:47'),
 (16, 16, 75, '2025-08-19 11:42:32'),
-(17, 17, 0, '2025-08-19 11:43:27'),
+(17, 17, 20, '2025-12-05 14:52:32'),
 (18, 18, 110, '2025-08-19 11:42:32'),
 (19, 19, 95, '2025-08-19 11:42:32'),
 (20, 20, 0, '2025-08-19 11:43:27'),
@@ -349,7 +357,9 @@ INSERT INTO `inventory` (`inventory_id`, `product_id`, `stock_quantity`, `last_u
 (22, 22, 100, '2025-08-19 11:42:32'),
 (23, 23, 150, '2025-08-19 11:42:32'),
 (24, 24, 85, '2025-08-19 11:42:32'),
-(25, 25, 120, '2025-08-19 11:42:32');
+(25, 25, 120, '2025-08-19 11:42:32'),
+(26, 42, 457, '2025-12-05 14:38:25'),
+(27, 43, 200, '2025-12-05 14:55:09');
 
 -- --------------------------------------------------------
 
@@ -420,7 +430,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `customer_id`, `employee_id`, `order_date`, `total_amount`, `order_status`, `status`) VALUES
-(1, 1, 2, '2024-05-01 10:00:00', 55.00, 'Pending', 'Pending'),
+(1, 1, 2, '2024-05-01 10:00:00', 55.00, 'Rejected', 'Pending'),
 (2, 2, 2, '2024-05-01 12:30:00', 150.00, 'Pending', 'Pending'),
 (3, 3, 1, '2024-05-02 09:45:00', 70.00, 'Pending', 'Pending'),
 (4, 4, 3, '2024-05-02 11:15:00', 30.00, 'Pending', 'Pending'),
@@ -540,15 +550,16 @@ INSERT INTO `orders` (`order_id`, `customer_id`, `employee_id`, `order_date`, `t
 (138, 1011, NULL, '2025-11-22 19:35:24', 940.00, 'Pending', 'active'),
 (139, 1011, 11, '2025-11-22 19:48:11', 650.00, 'Pending', 'active'),
 (140, 1011, 8, '2025-11-22 19:49:17', 350.00, 'Pending', 'active'),
-(141, 1011, 3, '2025-11-22 19:49:50', 330.00, 'Pending', 'active'),
-(142, 1011, 1, '2025-11-22 19:52:06', 210.00, 'Pending', 'active'),
-(143, 1011, 3, '2025-11-22 19:54:05', 100.00, 'Pending', 'active'),
-(144, 1011, 2, '2025-11-22 19:58:32', 280.00, 'Pending', 'active'),
+(141, 1011, 3, '2025-11-22 19:49:50', 330.00, 'Rejected', 'active'),
+(142, 1011, 1, '2025-11-22 19:52:06', 210.00, 'Rejected', 'active'),
+(143, 1011, 3, '2025-11-22 19:54:05', 100.00, 'Rejected', 'active'),
+(144, 1011, 2, '2025-11-22 19:58:32', 280.00, 'Rejected', 'active'),
 (145, 1015, 9, '2025-11-22 20:01:09', 460.00, 'Rejected', 'active'),
 (146, 1011, 4, '2025-11-22 20:01:47', 680.00, 'Rejected', 'active'),
 (147, 1011, 3, '2025-11-22 20:11:51', 50.00, 'Delivered', 'active'),
 (148, 1015, 11, '2025-11-22 20:24:22', 100.00, 'Delivered', 'active'),
-(149, 1016, 7, '2025-11-22 20:33:19', 360.00, 'Pending', 'active');
+(149, 1016, 7, '2025-11-22 20:33:19', 360.00, 'Pending', 'active'),
+(150, 1016, 3, '2025-12-01 01:21:17', 150.00, 'Pending', 'active');
 
 -- --------------------------------------------------------
 
@@ -627,11 +638,52 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `quantity`
 (56, 146, 3, 1, 15.00),
 (57, 147, 1, 1, 25.00),
 (58, 148, 1, 2, 25.00),
-(59, 149, 13, 2, 90.00);
+(59, 149, 13, 2, 90.00),
+(60, 150, 1, 3, 25.00);
 
 --
 -- Triggers `order_items`
 --
+DELIMITER $$
+CREATE TRIGGER `restore_inventory_on_order_delete` AFTER DELETE ON `order_items` FOR EACH ROW BEGIN
+    UPDATE inventory
+    SET stock_quantity = stock_quantity + OLD.quantity
+    WHERE product_id = OLD.product_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_inventory_on_order` AFTER INSERT ON `order_items` FOR EACH ROW BEGIN
+    UPDATE inventory
+    SET stock_quantity = stock_quantity - NEW.quantity
+    WHERE product_id = NEW.product_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_order_total_on_delete` AFTER DELETE ON `order_items` FOR EACH ROW BEGIN
+    UPDATE orders
+    SET total_amount = total_amount - (OLD.quantity * OLD.unit_price)
+    WHERE order_id = OLD.order_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_order_total_on_insert` AFTER INSERT ON `order_items` FOR EACH ROW BEGIN
+    UPDATE orders
+    SET total_amount = total_amount + (NEW.quantity * NEW.unit_price)
+    WHERE order_id = NEW.order_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_order_total_on_update` AFTER UPDATE ON `order_items` FOR EACH ROW BEGIN
+    UPDATE orders
+    SET total_amount = total_amount + (NEW.quantity * NEW.unit_price) - (OLD.quantity * OLD.unit_price)
+    WHERE order_id = NEW.order_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -704,15 +756,18 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `c
 (23, 'Brownie', 'Chocolate fudge brownie', 50.00, 5, '0', '2025-08-19 11:40:29'),
 (24, 'Fruit Salad', 'Mixed fresh fruits with honey', 60.00, 5, '0', '2025-08-19 11:40:29'),
 (25, 'Veg Sandwich', 'Grilled vegetables sandwich', 65.00, 3, '0', '2025-08-19 11:40:29'),
-(26, 'Chicken Sandwich Deluxe', 'Chicken sandwich with extra cheese', 100.00, 3, '0', '2025-08-19 11:40:29'),
-(27, 'Cheese Pizza', 'Medium pizza with mozzarella cheese', 180.00, 2, '0', '2025-08-19 11:40:29'),
-(28, 'Pepperoni Pizza', 'Medium pizza with pepperoni', 200.00, 2, '0', '2025-08-19 11:40:29'),
-(29, 'Lemonade', 'Fresh lemon drink', 35.00, 4, '0', '2025-08-19 11:40:29'),
-(30, 'Iced Coffee', 'Cold coffee with ice', 70.00, 4, '0', '2025-08-19 11:40:29'),
-(31, 'Muffin', 'Chocolate chip muffin', 40.00, 5, '0', '2025-08-19 11:40:29'),
-(32, 'Cupcake', 'Vanilla cupcake with cream', 45.00, 5, '0', '2025-08-19 11:40:29'),
-(33, 'Veg Wrap', 'Healthy veg wrap with sauces', 60.00, 3, '0', '2025-08-19 11:40:29'),
-(34, 'Testy food', 'This is very testy food', 100.00, 8, '0', '2025-11-22 10:51:31');
+(26, 'Chicken Sandwich Deluxe', 'Chicken sandwich with extra cheese', 100.00, 3, '1', '2025-08-19 11:40:29'),
+(27, 'Cheese Pizza', 'Medium pizza with mozzarella cheese', 180.00, 2, '1', '2025-08-19 11:40:29'),
+(28, 'Pepperoni Pizza', 'Medium pizza with pepperoni', 200.00, 2, '1', '2025-08-19 11:40:29'),
+(29, 'Lemonade', 'Fresh lemon drink', 35.00, 4, '1', '2025-08-19 11:40:29'),
+(30, 'Iced Coffee', 'Cold coffee with ice', 70.00, 4, '1', '2025-08-19 11:40:29'),
+(31, 'Muffin', 'Chocolate chip muffin', 40.00, 5, '1', '2025-08-19 11:40:29'),
+(32, 'Cupcake', 'Vanilla cupcake with cream', 45.00, 5, '1', '2025-08-19 11:40:29'),
+(33, 'Veg Wrap', 'Healthy veg wrap with sauces', 60.00, 3, '1', '2025-08-19 11:40:29'),
+(34, 'Testy food', 'This is very testy food', 100.00, 8, '1', '2025-11-22 10:51:31'),
+(41, 'Carson Barber', 'Odio dolore vero nos', 489.00, 8, '1', '2025-12-05 14:33:19'),
+(42, 'Aphrodite Sexton', 'Temporibus molestiae', 397.00, 10, '1', '2025-12-05 14:38:25'),
+(43, 'Vapa Pitha', 'Very testy cake for winter', 15.00, 8, '0', '2025-12-05 14:55:09');
 
 -- --------------------------------------------------------
 
@@ -764,6 +819,15 @@ INSERT INTO `salaries` (`salary_id`, `employee_id`, `amount`, `payment_date`) VA
 --
 -- Triggers `salaries`
 --
+DELIMITER $$
+CREATE TRIGGER `prevent_salary_decrease` BEFORE UPDATE ON `salaries` FOR EACH ROW BEGIN
+    IF NEW.amount < OLD.amount THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Salary cannot be decreased.';
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1127,7 +1191,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `menus`
@@ -1145,13 +1209,13 @@ ALTER TABLE `menu_items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -1163,7 +1227,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `returns`

@@ -9,8 +9,14 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "admin") {
   exit;
 }
 
-// only not-deleted foods
-$stmt = $conn->prepare("SELECT * FROM products WHERE deleted='0' ORDER BY product_id ASC");
+// fetch all active products + stock from inventory
+$stmt = $conn->prepare("
+    SELECT p.*, i.stock_quantity 
+    FROM products p
+    LEFT JOIN inventory i ON p.product_id = i.product_id
+    WHERE p.deleted = '0'
+    ORDER BY p.product_id ASC
+");
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -42,17 +48,44 @@ $result = $stmt->get_result();
       font-size: 15px;
     }
     tr:hover td { background: #f8fafc; }
+
     .price { font-weight: 700; color: #16a34a; }
+
+    /* NEW CONSISTENT BUTTON STYLES */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-update,
+    .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;
+      padding: 0px 0;
+      height: 36px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s ease-in-out;
+    }
+
+    .btn-update {
+      background: #2563eb;
+    }
+    .btn-update:hover {
+      background: #1e40af;
+    }
 
     .btn-danger {
       background: #dc2626;
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: white;
-      font-size: 14px;
-      text-decoration: none;
     }
-    .btn-danger:hover { opacity: .9; }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
 
     .header-row {
       display: flex;
@@ -84,12 +117,13 @@ $result = $stmt->get_result();
           <th>Food Name</th>
           <th>Description</th>
           <th>Price</th>
-          <th>Category ID</th>
+          <th>Stock</th>
           <th>Created</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
+
         <?php if ($result->num_rows > 0): ?>
           <?php while($row = $result->fetch_assoc()): ?>
             <tr>
@@ -97,24 +131,36 @@ $result = $stmt->get_result();
               <td><?= htmlspecialchars($row["product_name"]) ?></td>
               <td><?= htmlspecialchars($row["description"]) ?></td>
               <td class="price">৳<?= number_format($row["price"], 2) ?></td>
-              <td><?= $row["category_id"] ?></td>
+              
+              <td style="font-weight:700;"><?= $row["stock_quantity"] ?? 0 ?></td>
+
               <td><?= $row["created_at"] ?></td>
+
               <td>
-                <a class="btn-danger"
-                   href="deleteProduct.php?id=<?= $row["product_id"] ?>"
-                   onclick="return confirm('Soft delete this food? It will be hidden.');">
-                   Delete
-                </a>
+                <div class="action-buttons">
+                  
+                  <!-- UPDATE BUTTON -->
+                  <a class="btn-update"
+                     href="update_product.php?id=<?= $row["product_id"] ?>">
+                     Update
+                  </a>
+
+                  <!-- DELETE BUTTON -->
+                  <a class="btn-danger"
+                     href="deleteProduct.php?id=<?= $row["product_id"] ?>"
+                     onclick="return confirm('Soft delete this food? It will be hidden.');">
+                     Delete
+                  </a>
+
+                </div>
               </td>
             </tr>
           <?php endwhile; ?>
+
         <?php else: ?>
-          <tr>
-            <td colspan="7" style="text-align:center;padding:20px;">
-              No active foods found.
-            </td>
-          </tr>
+          <tr><td colspan="7" style="text-align:center;padding:20px;">No foods found.</td></tr>
         <?php endif; ?>
+
       </tbody>
     </table>
   </div>
