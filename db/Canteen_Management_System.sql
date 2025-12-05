@@ -147,7 +147,8 @@ INSERT INTO `customers` (`customer_id`, `customer_name`, `email`, `password`, `r
 (1009, 'neka', 'neka@gmail.com', 'login', 'user', '6546524', 'neka', '2025-11-22 08:42:42', '1'),
 (1011, 'sohan', 'gubtopper@gmail.com', '123', 'admin', '014567', 'pabna', '2025-11-22 09:30:10', '0'),
 (1015, 'abc@gmail.com', 'abc@gmail.com', 'abc@gmail.com', 'user', '43214', 'abc@gmail.com', '2025-11-22 14:00:42', '0'),
-(1016, 'Md Ekra Islam Ohi', 'ekraislamohi@2023.gmail.com', '01581828741', 'user', '01581828741', 'Lama,Bandarban', '2025-11-22 14:32:25', '0');
+(1016, 'Md Ekra Islam Ohi', 'ekraislamohi@2023.gmail.com', '01581828741', 'user', '01581828741', 'Lama,Bandarban', '2025-11-22 14:32:25', '0'),
+(1017, 'Ayshi Sarker', 'ayshisarker@gmail.com', '123', 'admin', '01581828742', 'Lama,Bandarban', '2025-11-22 14:32:25', '0');
 
 --
 -- Triggers `customers`
