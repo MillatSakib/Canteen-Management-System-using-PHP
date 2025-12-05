@@ -19,7 +19,7 @@ $stmt = $conn->prepare("
     c.customer_name
   FROM orders o
   JOIN customers c ON o.customer_id = c.customer_id
-  WHERE o.status = 'active'
+  
   ORDER BY o.order_id DESC
 ");
 $stmt->execute();

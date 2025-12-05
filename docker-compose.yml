@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   php-apache:
     build: .
     container_name: canteen_web
@@ -28,11 +29,14 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: canteen_phpmyadmin
+    restart: always
     ports:
       - "8081:80"
-    restart: always
     environment:
-      PMA_HOST: db
+      PMA_HOST: canteen_db     # connect to MySQL container name
+      PMA_USER: root
+      PMA_PASSWORD: ""         # empty root password
+      PMA_ARBITRARY: 1         # allows manual host entry if needed
     depends_on:
       - db
 

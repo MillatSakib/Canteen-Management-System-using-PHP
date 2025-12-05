@@ -13,7 +13,7 @@ $customer_id = $_SESSION["user_id"];
 $stmt = $conn->prepare("
   SELECT order_id, order_date, total_amount, order_status
   FROM orders
-  WHERE customer_id = ? AND status = 'active'
+  WHERE customer_id = ? 
   ORDER BY order_id ASC
 ");
 $stmt->bind_param("i", $customer_id);
